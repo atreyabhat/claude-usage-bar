@@ -7,11 +7,9 @@ struct CcbarApp: App {
         MenuBarExtra {
             MenuContent(store: store)
         } label: {
-            // Quiet by default: "</> NN%" as a single label (a multi-view menu
-            // bar label renders unreliably), tinting only as you near the limit.
+            // Plain text so it matches the system menu bar font and size (like the
+            // clock) and stays monochrome. Colour lives in the dropdown rows.
             Text("</> \(store.barLabel)")
-                .monospacedDigit()
-                .foregroundStyle(store.barColor ?? .primary)
         }
         .menuBarExtraStyle(.window)
     }

@@ -41,7 +41,11 @@ struct MenuContent: View {
         }
         .padding(14)
         .frame(width: 260)
-        .onAppear { store.refreshIfStale() }
+        .onAppear {
+            store.startTicking()
+            store.refreshIfStale()
+        }
+        .onDisappear { store.stopTicking() }
     }
 
     private func limitRow(_ row: LimitRow) -> some View {

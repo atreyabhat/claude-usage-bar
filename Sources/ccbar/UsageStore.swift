@@ -29,9 +29,22 @@ final class UsageStore: ObservableObject {
         started = true
         Task { await refresh() }
         scheduleTimer()
+    }
+
+    /// The 1s clock only runs while the dropdown is open (it drives the reset
+    /// countdown and "updated ago"). Closed, the app just waits for the 60s poll,
+    /// so it sits idle at ~0% CPU instead of waking every second.
+    func startTicking() {
+        tick = Date()
+        tickTimer?.invalidate()
         tickTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             Task { @MainActor in self?.tick = Date() }
         }
+    }
+
+    func stopTicking() {
+        tickTimer?.invalidate()
+        tickTimer = nil
     }
 
     private func scheduleTimer() {
@@ -101,9 +114,6 @@ final class UsageStore: ObservableObject {
         guard let p = barPercent else { return "…" }
         return "\(p)%"
     }
-
-    /// Menu-bar tint: blends in under 80%, then orange, then red.
-    var barColor: Color? { barPercent.flatMap(bandColor) }
 
     func percentColor(_ row: LimitRow) -> Color? { bandColor(row.percent) }
 
