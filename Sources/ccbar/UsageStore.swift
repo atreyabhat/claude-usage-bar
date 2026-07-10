@@ -55,9 +55,11 @@ final class UsageStore: ObservableObject {
         }
     }
 
-    func refresh() async {
+    func refresh(force: Bool = false) async {
         if isRefreshing { return }
-        if Date() < nextAllowedFetch { return }   // still in a backoff window
+        // Backoff only throttles the automatic poll; a user-initiated open forces
+        // a fetch so opening the dropdown always tries for fresh numbers.
+        if !force && Date() < nextAllowedFetch { return }
         isRefreshing = true
         defer { isRefreshing = false }
 
@@ -74,8 +76,8 @@ final class UsageStore: ObservableObject {
         } catch UsageError.http(401) {
             lastError = "Auth expired, open Claude Code"
         } catch UsageError.http(429) {
-            // Back off: 60s, doubling, capped at 5min; resets on first success.
-            backoff = backoff == 0 ? 60 : min(backoff * 2, 300)
+            // Back off: 60s, doubling, capped at 2min; resets on first success.
+            backoff = backoff == 0 ? 60 : min(backoff * 2, 120)
             nextAllowedFetch = Date().addingTimeInterval(backoff)
             lastError = "Rate limited, retrying soon"
         } catch UsageError.http(let code) {
@@ -91,7 +93,7 @@ final class UsageStore: ObservableObject {
     /// recently, so opening always shows near-live numbers without hammering.
     func refreshIfStale(maxAge: TimeInterval = 15) {
         if let u = usage, Date().timeIntervalSince(u.fetchedAt) < maxAge { return }
-        Task { await refresh() }
+        Task { await refresh(force: true) }
     }
 
     // MARK: - Derived display values
