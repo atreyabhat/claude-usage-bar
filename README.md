@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="assets/logo.png" width="88" alt="Claude Usage Bar logo">
-</p>
-
 # Claude Usage Bar
 
 A tiny macOS menu bar app that shows your Claude Code usage as `</> NN%`. Click it
