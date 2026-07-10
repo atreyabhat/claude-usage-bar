@@ -7,7 +7,7 @@ for the full breakdown (session, weekly, per model) with reset times.
 
 Paste this into Claude Code:
 
-> Install the menu bar app from https://github.com/atreyabhat/menu-token-bar: clone
+> Install the menu bar app from https://github.com/atreyabhat/claude-usage-bar: clone
 > it and run `scripts/install.sh`. It builds from source, puts it in my menu bar,
 > and starts it at login. Then confirm it is running.
 

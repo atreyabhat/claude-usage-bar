@@ -6,11 +6,11 @@
 # quarantine it: no Gatekeeper prompt, no signing, no Apple Developer account.
 set -euo pipefail
 
-REPO_URL="https://github.com/atreyabhat/menu-token-bar.git"
+REPO_URL="https://github.com/atreyabhat/claude-usage-bar.git"
 APP="ccbar"
 BUNDLE="Claude Usage Bar.app"
 LABEL="dev.atreya.ccbar"
-INSTALL_DIR="$HOME/Library/Application Support/menu-token-bar"
+INSTALL_DIR="$HOME/Library/Application Support/claude-usage-bar"
 AGENTS_DIR="$HOME/Library/LaunchAgents"
 PLIST="$AGENTS_DIR/$LABEL.plist"
 
@@ -26,7 +26,7 @@ if [ -f "Package.swift" ] && grep -q 'name: "ccbar"' Package.swift 2>/dev/null; 
   SRC="$(pwd)"
   echo "==> Building from current checkout: $SRC"
 else
-  SRC="$HOME/.cache/menu-token-bar"
+  SRC="$HOME/.cache/claude-usage-bar"
   echo "==> Cloning $REPO_URL"
   rm -rf "$SRC"
   git clone --depth 1 "$REPO_URL" "$SRC"
@@ -69,4 +69,4 @@ launchctl kickstart -k "$GUI/$LABEL" 2>/dev/null || true
 echo ""
 echo "Done. Claude Usage Bar is in your menu bar now (look for \"</> NN%\")."
 echo "It starts automatically at login. If you quit it, it returns after your next login."
-echo "Uninstall: curl -fsSL https://raw.githubusercontent.com/atreyabhat/menu-token-bar/main/scripts/uninstall.sh | bash"
+echo "Uninstall: curl -fsSL https://raw.githubusercontent.com/atreyabhat/claude-usage-bar/main/scripts/uninstall.sh | bash"

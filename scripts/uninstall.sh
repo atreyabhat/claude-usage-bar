@@ -4,7 +4,7 @@ set -euo pipefail
 
 APP="ccbar"
 LABEL="dev.atreya.ccbar"
-INSTALL_DIR="$HOME/Library/Application Support/menu-token-bar"
+INSTALL_DIR="$HOME/Library/Application Support/claude-usage-bar"
 PLIST="$HOME/Library/LaunchAgents/$LABEL.plist"
 
 GUI="gui/$(id -u)"
